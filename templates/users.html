@@ -1,0 +1,62 @@
+{% extends 'dashboard.html' %} {% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-plain table-plain-bg">
+          <div class="card-header">
+            <h4 class="card-title">Customer's</h4>
+            <p class="card-category">List of all customers</p>
+            <a
+              href="{% url 'create_user' %}"
+              class="btn btn-primary btn-sm"
+              style="float: right; margin-right: 7rem"
+              >Add User</a
+            >
+          </div>
+          <div class="card-body table-full-width table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Account No.</th>
+                <th>Balance</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td>{{user.id}}</td>
+                  <td>{{user.first_name}} {{user.last_name}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.account_number}}</td>
+                  <td>{{user.balance}}</td>
+                  <td>
+                    <a
+                      href="{% url 'view_user' user.id %}"
+                      class="btn btn-primary btn-sm"
+                      >View</a
+                    >
+                    <a
+                      href="{% url 'edit_user' user.id %}"
+                      class="btn btn-warning btn-sm"
+                      >Edit</a
+                    >
+                    <a
+                      href="{% url 'delete_user' user.id%}"
+                      class="btn btn-danger btn-sm"
+                      >Delete</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+/* message section  */
+li {
+    list-style-type: none;
+  }
+  .message {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    padding: 0.4rem 1rem;
+    border-radius: 0.4rem;
+    color: #222;
+    transition: all 0.2s;
+    transform: translate(0);
+    animation: autoHide 0s ease-in 4s forwards;
+  }
+  
+  .message-success {
+    background: rgb(55, 82, 201);
+    color: #fff;
+    animation: autoHide 0s ease-in 4s forwards;
+  }
+  
+  .message-error {
+    background: red;
+    color: #fff;
+    animation: autoHide 0s ease-in 4s forwards;
+  }
+  
+  .message-hide {
+    transform: translate(200%);
+  }
+  
+  /* messege section end */

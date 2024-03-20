@@ -21,6 +21,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
+    path('', include('transactions.urls')),
+    path('', include('users.urls')),
 ]
 
 admin.site.site_header = 'Bank Admin Panel'

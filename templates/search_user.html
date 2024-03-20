@@ -1,0 +1,143 @@
+{% extends 'dashboard.html' %} {% block content %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-plain table-plain-bg">
+          <div class="card-header">
+            <h4 class="card-title">Customer's</h4>
+            <p class="card-category">Customers found with <strong>{{query}}</strong></p>
+            
+            <a
+              href="{% url 'create_user' %}"
+              class="btn btn-primary btn-sm"
+              style="float: right; margin-right: 7rem"
+              >Add User</a
+            >
+          </div>
+          <div class="card-body table-full-width table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Account No.</th>
+                <th>Balance</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td>{{user.id}}</td>
+                  <td>{{user.first_name}} {{user.last_name}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.account_number}}</td>
+                  <td>{{user.balance}}</td>
+                  <td>
+                    <a
+                      href="{% url 'view_user' user.id %}"
+                      class="btn btn-primary btn-sm"
+                      >View</a
+                    >
+                    <a
+                      href="{% url 'edit_user' user.id %}"
+                      class="btn btn-warning btn-sm"
+                      >Edit</a
+                    >
+                    <a
+                      href="{% url 'delete_user' user.id%}"
+                      class="btn btn-danger btn-sm"
+                      >Delete</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- List of transactions -->
+      {% if transactions %}
+      <div class="col-md-12">
+        <div class="card card-plain table-plain-bg">
+          <div class="card-header">
+            <h4 class="card-title">Transactions</h4>
+            <p class="card-category">Transactions found with <strong>{{query}}</strong></p>
+          </div>
+          <div class="card-body table-full-width table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Receiver's Account</th>
+                <th>Amount</th>
+                <th>Purpose</th>
+                <th>Status</th>
+                <th>Date</th>
+              </thead>
+              <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                  <td>{{ transaction.transaction_id }}</td>
+                  {% if transaction.user.first_name %}
+                  <td>
+                    {{ transaction.user.first_name }} {{transaction.user.last_name }}
+                  </td>
+                  {% else %}
+                  <td>{{ transaction.user.email }}</td>
+                  {% endif %}
+                  <td>{{ transaction.receiver_name }}</td>
+                  <td>{{ transaction.receiver_account }}</td>
+                  <td>{{ transaction.transaction_amount }}</td>
+                  <td>{{ transaction.transaction_type }}</td>
+                  <td>{{ transaction.transaction_status }}</td>
+                  <td>{{ transaction.transaction_date }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <div class="clearfix">
+              <div class="pagination">
+                <ul>
+                  {% if transactions.has_previous %}
+                  <li>
+                    <a href="?page={{ transactions.previous_page_number }}"
+                      >Previous</a
+                    >
+                  </li>
+                  {% endif %} {% for num in transactions.paginator.page_range %}
+                  {% if num == transactions.number %}
+                  <li class="active"><span>{{ num }}</span></li>
+                  {% else %}
+                  <li><a href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %} {% endfor %} {% if transactions.has_next %}
+                  <li>
+                    <a href="?page={{ transactions.next_page_number }}">Next</a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        {% else %}
+        <div class="col-md-12">
+            <div class="card card-plain table-plain-bg">
+            <div class="card-header">
+              <h4 class="card-title
+                ">No Transactions</h4>
+                <p class="card-category">No transactions have been made</p>
+            </div>  
+          </div>
+          {% endif %}
+        </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

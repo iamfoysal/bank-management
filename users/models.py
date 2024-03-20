@@ -13,6 +13,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    account_number = models.CharField(max_length=20, blank=True)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
     
 
     USERNAME_FIELD = "email"
@@ -22,3 +25,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    class Meta:
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
+        ordering = ["-date_joined"]
+    
