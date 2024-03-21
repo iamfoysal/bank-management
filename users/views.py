@@ -71,6 +71,7 @@ def create_user(request):
             return redirect("create_user")
         CustomUser.objects.create_user(email=email, first_name=first_name, last_name=last_name,
                                        account_number=account_number, balance=balance, password="password")
+        messages.success(request, "User created successfully")
 
         redirect("users_list")
     return render(request, "create_user.html")
@@ -81,9 +82,33 @@ def user_search(request):
     if query:
         users = CustomUser.objects.filter(first_name__icontains=query) | CustomUser.objects.filter(
             last_name__icontains=query) | CustomUser.objects.filter(email__icontains=query)
-        transactions = Transaction.objects.filter(user__first_name__icontains=query) | Transaction.objects.filter(
-            user__last_name__icontains=query) | Transaction.objects.filter(user__email__icontains=query)
+        transactions = (Transaction.objects.filter(user__first_name__icontains=query) | Transaction.objects.filter(
+            user__last_name__icontains=query) | Transaction.objects.filter(user__email__icontains=query))[:3]
 
     else:
         users = CustomUser.objects.all()
     return render(request, 'search_user.html', {'users': users, 'query': query, 'transactions': transactions})
+
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = None
+        if "@" in username:
+            user = authenticate(request, email=username, password=password)
+        else:
+            user = authenticate(request, username=username, password=password)
+
+        if user:
+            login(request, user)
+            return redirect("dashboard")
+        messages.error(request, "Invalid credentials")
+        return redirect("user_login")
+    return render(request, "auth/login.html")
+
+
+def user_logout(request):
+    logout(request)
+    messages.success(request, "You have been logged out")
+    return redirect("user_login")

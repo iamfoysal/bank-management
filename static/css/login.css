@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+body {
+  font-family: "Nunito", sans-serif;
+  /* background-color: #8181f038; */
+  margin: 0;
+  height: 100vh;
+}
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper .content {
+  background-color: #dfe3f600;
+  padding: 30px 15px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  min-width: 200px;
+  color: #000 !important;
+}
+.wrapper .content button {
+  padding: 15px;
+  width: 150px;
+  border: unset;
+  background: #262936;
+  border-radius: 50px;
+  color: rgb(223, 211, 211);
+  cursor: pointer;
+}
+.wrapper .content button:focus {
+  outline: none;
+}
+.wrapper .content header {
+  text-align: center;
+}
+.wrapper .content header h1 {
+  color: #943bea;
+  margin-top: 0;
+  font-size: 230%;
+}
+.wrapper .content .login-form {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrapper .content .login-form .input-group {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 310px;
+}
+.wrapper .content .login-form .input-group input {
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #262936;
+  background-color: #a0aee812;
+  color: rgb(9 8 8 / 96%);
+  border-radius: 50px;
+}
+.country_code {
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #262936;
+  background-color: #a0aee812 !important;
+
+  border-radius: 50px;
+}
+.country_code_option {
+  padding-right: 15px !important;
+  color: #141212ec !important;
+}
+.wrapper .content .login-form .input-group textarea {
+  padding: 15px;
+  font-size: 13px;
+  border: 1px solid #262936;
+  background-color: #262936;
+  color: rgb(207, 197, 197);
+}
+/* .wrapper .content .login-form .input-group select {
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #262936;
+  background-color: #262936;
+  color: rgb(207, 197, 197);
+} */
+.wrapper .content .login-form .input-group input:focus {
+  color: #141313;
+  outline: 0;
+}
+.wrapper .content .login-form .input-group label {
+  color: #767b9c;
+  font-size: 12px;
+  margin-bottom: 3px;
+  margin-left: 5px;
+}
+.wrapper .content .login-form .input-group button {
+  background-color: #943bea;
+  border: unset;
+  color: #fff;
+  align-self: center;
+  margin-top: 15px;
+}
+.wrapper .content .login-form .input-group button:hover {
+  background-color: #4358a4;
+}
+.wrapper .content footer {
+  padding-top: 15px;
+  text-align: center;
+}
+.wrapper .content footer a,
+small {
+  color: #999;
+  text-decoration: none;
+  font-size: 11px;
+}
+@media screen and (max-width: 720px) {
+  .wrapper .content {
+    padding-right: 0;
+    padding-left: 0;
+    margin: 0 10px;
+  }
+}
+
+.wrapper .content header .add-product-content {
+  color: #fff;
+  margin-top: 0;
+  font-size: 21px;
+}
+
+.product-update-form {
+  display: table;
+  color: #fff;
+  font-size: 12px;
+}
+
+.product-update-form a {
+  color: #fff;
+  justify-content: end;
+  align-items: end;
+  justify-items: center;
+  align-content: center;
+}
+
+/* message section  */
+li {
+  list-style-type: none;
+}
+.message {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.4rem;
+  color: #222;
+  transition: all 0.2s;
+  transform: translate(0);
+  animation: autoHide 0s ease-in 4s forwards;
+}
+
+.message-success {
+  background: rgb(55, 82, 201);
+  color: #fff;
+  animation: autoHide 0s ease-in 4s forwards;
+}
+
+.message-error {
+  background: red;
+  color: #fff;
+  animation: autoHide 0s ease-in 4s forwards;
+}
+
+.message-hide {
+  transform: translate(200%);
+}
+
+/* messege section end */

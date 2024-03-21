@@ -16,8 +16,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     account_number = models.CharField(max_length=20, blank=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -25,13 +23,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
-    
+
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
-        ordering = ["-date_joined"]
-    
+        ordering = ["id"]

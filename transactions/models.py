@@ -3,13 +3,13 @@ from users.models import CustomUser
 
 
 class BankAccount(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    account_number = models.CharField(max_length=20)
-    account_holder = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True, verbose_name="bank Name")
     balance = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.account_number
+        return self.name
     
 
 STATUS = (
