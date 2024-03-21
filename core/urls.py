@@ -20,11 +20,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
     path('', include('transactions.urls')),
     path('', include('users.urls')),
+    path('', include('accounts.urls')),
 ]
 
 admin.site.site_header = 'Bank Admin Panel'
-admin.site.site_title  = 'Bank Admin Panel'
-admin.site.index_title   = 'Welcome to Bank Admin Panel'
+admin.site.site_title = 'Bank Admin Panel'
+admin.site.index_title = 'Welcome to Bank Admin Panel'

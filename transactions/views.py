@@ -15,31 +15,43 @@ def dashboard(request):
     total_users = CustomUser.objects.count()
     total_amount = Transaction.objects.aggregate(total_amount=Sum('transaction_amount'))['total_amount']
     total_amount = total_amount if total_amount else 0
+    last_tan_transactions = (Transaction.objects.all().order_by('-transaction_date'))[:10]
     context = {
         "total_transactions": total_transactions,
         "total_users": total_users,
-        "total_amount": total_amount
+        "total_amount": total_amount,
+        "transactions": last_tan_transactions
     }
     return render(request, "dashboard_home.html", context)
 
 
 def transactions_list(request):
-    # Get all transactions
     transactions = Transaction.objects.all()
-
-    # Number of transactions per page
     per_page = 10
-
-    # Create a paginator object
     paginator = Paginator(transactions, per_page)
-
-    # Get the current page number from the request, default to 1
     page_number = request.GET.get('page', 1)
-
-    # Get the transactions for the requested page
     page_obj = paginator.get_page(page_number)
 
     return render(request, "transaction.html", {"transactions": page_obj})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -63,3 +75,4 @@ def create_transaction(request):
         except CustomUser.DoesNotExist:
             return HttpResponse("Receiver not found")
     return render(request, "create_transaction.html")
+

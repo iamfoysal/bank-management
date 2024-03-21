@@ -25,6 +25,7 @@
                 <th>Balance</th>
                 <th>Actions</th>
               </thead>
+              {% if users %}
               <tbody>
                 {% for user in users %}
                 <tr>
@@ -52,7 +53,9 @@
                   </td>
                 </tr>
                 {% endfor %}
+
               </tbody>
+                {% endif %}
             </table>
           </div>
         </div>
@@ -125,17 +128,8 @@
           </div>
         </div>
       </div>
-        {% else %}
-        <div class="col-md-12">
-            <div class="card card-plain table-plain-bg">
-            <div class="card-header">
-              <h4 class="card-title
-                ">No Transactions</h4>
-                <p class="card-category">No transactions have been made</p>
-            </div>  
-          </div>
+        
           {% endif %}
-        </div>
 
     </div>
   </div>

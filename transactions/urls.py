@@ -1,9 +1,10 @@
 
 from .views import dashboard, transactions_list
-
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 urlpatterns = [
-    path('dashboard/', dashboard, name='dashboard'),
-    path('dashboard/transactions_list/', transactions_list, name='transactions-list'),
+    path('dashboard/', login_required(dashboard), name='dashboard'),
+    path('dashboard/transactions_list/',
+         login_required(transactions_list), name='transactions-list'),
 ]

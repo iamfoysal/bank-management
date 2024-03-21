@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign-In</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  </head>
+  <body>
+    {% include 'includes/message.html' %}
+    <section class="wrapper">
+      <div class="content">
+        <header>
+          <h1>Bank Manager Login</h1>
+        </header>
+        <section>
+          <form method="POST" class="login-form">
+            {% csrf_token %}
+            <div class="input-group">
+              <label for="username">Username or Phone</label>
+              <input
+                type="text"
+                placeholder="Username or Phone"
+                name="username"
+              />
+            </div>
+            <div class="input-group">
+              <label for="password">Password</label>
+              <input type="password" placeholder="Password" name="password" />
+            </div>
+            <div class="input-group"><button type="submit">Login</button></div>
+          </form>
+        </section>
+        
+      </div>
+    </section>
+    <script>
+      //  Message section
+      const message = document.querySelector(".message");
+      if (message) {
+        setTimeout(() => {
+          message.classList.add("message-hide");
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
