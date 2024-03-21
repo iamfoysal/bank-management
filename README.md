@@ -65,7 +65,7 @@
     ```
     http://localhost:8000/
     ```
-2. Click on the `Login` button.
+2. Click on the `Dashboard` button.
 3. Enter the username and password and click on the `Login` button. for example:
     ```
     username: admin
