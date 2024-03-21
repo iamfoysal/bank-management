@@ -38,12 +38,20 @@
         </div>
         <div class="form-group">
           <label for="account_number">Account Number:</label>
-          <input
+          <input disabled
             type="text"
             id="account_number"
-            name="account_number"
             class="form-control"
             value="{{ user.account_number }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="balance">Balance:</label>
+          <input disabled
+            type="text"
+            id="balance"
+            class="form-control"
+            value="{{ user.balance }}"
           />
         </div>
         <button type="submit" class="btn btn-primary">Update User</button>

@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.views import View
+from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import CustomUser
-from transactions.models import Transaction
+from transactions.models import Transaction, BankAccount
 
 
 def users_list(request):
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.filter(bank=request.user.bank, is_superuser=False)
     per_page = 10
     paginator = Paginator(users, per_page)
     page_number = request.GET.get('page', 1)
@@ -24,7 +25,6 @@ def edit_user(request, user_id):
         user.first_name = request.POST.get("first_name")
         user.last_name = request.POST.get("last_name")
         user.email = request.POST.get("email")
-        user.account_number = request.POST.get("account_number")
         user.save()
         messages.success(request, "User updated successfully")
         return redirect("edit_user", user_id=user.id)
@@ -69,8 +69,17 @@ def create_user(request):
         if get_user:
             messages.error(request, "This email already used by another user")
             return redirect("create_user")
-        CustomUser.objects.create_user(email=email, first_name=first_name, last_name=last_name,
-                                       account_number=account_number, balance=balance, password="password")
+        customer = CustomUser.objects.create_user(
+            email=email, first_name=first_name, last_name=last_name, account_number=account_number, password="password", bank=request.user.bank)
+        if balance:
+            bank = BankAccount.objects.get(pk=request.user.bank.id)
+            if Decimal(balance) > request.user.bank.balance:
+                messages.error(request, "Bank does not have enough balance")
+                return redirect("create_user")
+            customer.balance = balance
+            customer.save()
+            bank.balance -= Decimal(balance)
+            bank.save()
         messages.success(request, "User created successfully")
 
         redirect("users_list")
@@ -79,14 +88,16 @@ def create_user(request):
 
 def user_search(request):
     query = request.GET.get('q')
+    bank = BankAccount.objects.get(pk=request.user.bank.id)
+
     if query:
         users = CustomUser.objects.filter(first_name__icontains=query) | CustomUser.objects.filter(
-            last_name__icontains=query) | CustomUser.objects.filter(email__icontains=query)
+            last_name__icontains=query) | CustomUser.objects.filter(email__icontains=query).filter(bank__id=bank.id, is_superuser=False)
         transactions = (Transaction.objects.filter(user__first_name__icontains=query) | Transaction.objects.filter(
-            user__last_name__icontains=query) | Transaction.objects.filter(user__email__icontains=query))[:3]
+            user__last_name__icontains=query) | Transaction.objects.filter(user__email__icontains=query).filter(user__bank__id=bank.id))[:5]
 
     else:
-        users = CustomUser.objects.all()
+        users = CustomUser.objects.filter(bank=request.user.bank)
     return render(request, 'search_user.html', {'users': users, 'query': query, 'transactions': transactions})
 
 
@@ -100,9 +111,12 @@ def user_login(request):
         else:
             user = authenticate(request, username=username, password=password)
 
-        if user:
+        if user and user.is_superuser:
             login(request, user)
             return redirect("dashboard")
+        elif user and not user.is_superuser:
+            messages.error(request, "You are not authorized to view this page")
+            return redirect("user_login")
         messages.error(request, "Invalid credentials")
         return redirect("user_login")
     return render(request, "auth/login.html")
