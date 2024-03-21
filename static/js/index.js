@@ -56,16 +56,30 @@ btnScrollTo.addEventListener("click", function (e) {
 // 1. Add event listener to common parent element
 // 2. Determine what element originated the event
 
+// document.querySelector(".nav__links").addEventListener("click", function (e) {
+//   e.preventDefault();
+
+//   // Matching strategy
+//   if (e.target.classList.contains("nav__link")) {
+//     const id = e.target.getAttribute("href");
+//     document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+//   }
+// });
 document.querySelector(".nav__links").addEventListener("click", function (e) {
   e.preventDefault();
 
   // Matching strategy
   if (e.target.classList.contains("nav__link")) {
-    const id = e.target.getAttribute("href");
-    document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+    const href = e.target.getAttribute("href");
+    const id = href.substring(1); // Remove the '#' character
+    const targetElement = document.getElementById(id);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    } else if (e.target.classList.contains("dashboard-link")) {
+      window.location.href = e.target.href;
+    }
   }
 });
-
 ///////////////////////////////////////
 // Tabbed component
 
