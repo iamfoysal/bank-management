@@ -1,0 +1,120 @@
+{% extends 'dashboard.html' %} 
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <style>
+
+        .transfer-image{
+            display: flex;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .transfer-image img{
+            max-width: 25rem;
+        }
+    </style>
+    
+
+<div class="container">
+    <div class="row" style="height: 80%">
+        <div class="col-md-12 col-lg-6">
+            <div class="transfer-image ">
+                <img  src="{% static 'img/moneyTransfer.89055b6d.svg' %}" alt="" >
+            </div>
+            
+        </div>
+        <div class="col-md-12 col-lg-6">
+            <h2 class="text-center mb-4">Money Transfers</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sender">Accounts</label>
+                    <select id="sender" name="sender" class="form-control" required>
+                        <!-- disable select section -->
+                        <option value="" disabled selected>Select sender</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" data-account-number="{{ user.account_number }}">{{ user.first_name }} {{ user.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="account-number-display"></div>
+                <br>
+                <div class="form-group">
+                    <label for="transaction_type">Transaction Type:</label>
+                    <select id="transaction_type" name="transaction_type" class="form-control" required>
+                        <option value="" disabled selected>Select type</option>
+                        <option value="Deposit">Deposit</option>
+                        <option value="Withdrawal">Withdraw</option>
+                        <option value="Transfer">Transfer</option>
+                        <option value="Gift">Gift</option>
+                        <option value="Payment">Payment</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="receiver-account-group">
+                    <label for="receiver_account">Receiver's Account:</label>
+                    <input type="text" id="receiver_account" name="receiver_account" class="form-control" >
+                </div>
+                
+                <div class="form-group" id="receiver-name-group">
+                    <label for="receiver_name">Receiver's Name:</label>
+                    <input type="text" id="receiver_name" name="receiver_name" class="form-control" >
+                </div>
+                <div class="row" >
+                    <div class = "col-md-6">
+                        <div class="form-group">
+                            <label for="purpose">Note:</label>
+                            <input type="text" id="purpose" name="purpose" class="form-control" >
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="amount">Amount:</label>
+                            <input type="number" id="amount" name="amount" class="form-control" required>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Transfer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("sender").addEventListener("change", function() {
+        var selectedOption = this.options[this.selectedIndex];
+        var accountNumber = selectedOption.getAttribute("data-account-number");
+        document.getElementById("account-number-display").textContent = "Selected account number: " + accountNumber;
+    });
+
+    document.getElementById("transaction_type").addEventListener("change", function() {
+        var transactionType = this.value;
+        var receiverAccountGroup = document.getElementById("receiver-account-group");
+        var receiverNameGroup = document.getElementById("receiver-name-group");
+
+        if (transactionType === "Withdrawal") {
+            receiverAccountGroup.style.display = "none";
+            receiverNameGroup.style.display = "none";
+        } 
+        else if (transactionType === "Deposit") {
+            receiverAccountGroup.style.display = "none";
+            receiverNameGroup.style.display = "none";
+        }
+        
+        else {
+            receiverAccountGroup.style.display = "block";
+            receiverNameGroup.style.display = "block";
+        }
+    });
+</script>
+
+{% endblock %}
