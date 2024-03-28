@@ -45,4 +45,5 @@ class Transaction(models.Model):
         return self.user.first_name if self.user.first_name else self.transaction_id
 
     class Meta:
-        ordering = ["-transaction_id"]
+ 
+         ordering = ["-id"]

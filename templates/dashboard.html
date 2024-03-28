@@ -36,7 +36,7 @@
                 </div>
                 
                 <ul class="nav">
-                    <li>
+                    <li class="nav-item active" >
                         <a class="nav-link" href="{% url 'dashboard' %}">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
@@ -48,18 +48,18 @@
                             <p>Customers</p>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'transactions-list' %}">
                             <i class="nc-icon nc-notes"></i>
                             <p>Transactions List</p>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="nav-link" href="#">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Typography</p>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a class="nav-link" href="{% url 'transfer'%}">
                             <i class="nc-icon nc-atom"></i>
@@ -67,17 +67,18 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            <i class="nc-icon nc-pin-3"></i>
-                            <p>Maps</p>
+                        <a class="nav-link" href="{% url 'transaction-graph' %}">
+                            <!-- <i class="nc-icon nc-pin-3"></i> -->
+                            <i class="nc-icon nc-chart-bar-32" ></i>
+                            <p>Chart</p>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="nav-link" href="#">
                             <i class="nc-icon nc-bell-55"></i>
                             <p>Notifications</p>
                         </a>
-                    </li>
+                    </li> -->
                     
                 </ul>
             </div>

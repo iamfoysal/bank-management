@@ -1,0 +1,117 @@
+{% extends 'dashboard.html' %} {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<div class="container">
+    <div class="row justify-content-center">
+    
+    <canvas id="transactionChart" style="width:100%;max-width:800px"></canvas>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+    </div>
+</div>
+
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse the JSON transaction data
+            const transactions = JSON.parse('{{ transactions_json | safe }}');
+
+            // Process transaction data for chart
+            const transactionTypes = {};
+            transactions.forEach(transaction => {
+                const type = transaction.fields.transaction_type;
+                if (type in transactionTypes) {
+                    transactionTypes[type]++;
+                } else {
+                    transactionTypes[type] = 1;
+                }
+            });
+
+            const xValues = Object.keys(transactionTypes);
+            const yValues = Object.values(transactionTypes);
+            const barColors = ['#b91d47', '#00aba9', '#2b5797', '#e8c3b9', '#1e7145'];
+
+            // Create chart
+            new Chart('transactionChart', {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Transaction Types'
+                    }
+                }
+            });
+        });
+
+
+
+
+    //  line chart :
+
+    const transactionsData = JSON.parse('{{ transactions_json|escapejs }}');
+const depositTransactions = transactionsData.filter(transaction => transaction.fields.transaction_type === 'Deposit');
+const withdrawalTransactions = transactionsData.filter(transaction => transaction.fields.transaction_type === 'Withdrawal');
+const transferTransactions = transactionsData.filter(transaction => transaction.fields.transaction_type === 'Transfer');
+const giftTransactions = transactionsData.filter(transaction => transaction.fields.transaction_type === 'Gift');
+const paymentTransactions = transactionsData.filter(transaction => transaction.fields.transaction_type === 'Payment');
+
+const getTransactionAmounts = (transactions) => {
+  return transactions.map(transaction => parseFloat(transaction.fields.transaction_amount));
+};
+
+const xValues = transactionsData.map((transaction, index) => index + 1); // Assuming x-axis as transaction index
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [
+      { 
+        label: 'Deposit',
+        data: getTransactionAmounts(depositTransactions),
+        borderColor: "red",
+        fill: false
+      }, 
+      { 
+        label: 'Withdrawal',
+        data: getTransactionAmounts(withdrawalTransactions),
+        borderColor: "green",
+        fill: false
+      }, 
+      { 
+        label: 'Transfer',
+        data: getTransactionAmounts(transferTransactions),
+        borderColor: "blue",
+        fill: false
+      },
+      { 
+        label: 'Gift',
+        data: getTransactionAmounts(giftTransactions),
+        borderColor: "orange",
+        fill: false
+      },
+      { 
+        label: 'Payment',
+        data: getTransactionAmounts(paymentTransactions),
+        borderColor: "purple",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    legend: { display: true }
+  }
+});
+    </script>
+
+{% endblock %}

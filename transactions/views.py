@@ -75,13 +75,13 @@ def transfer(request):
         type = request.POST.get("transaction_type")
         transaction_remarks = request.POST.get("purpose")
 
-        last_user = Transaction.objects.last()
+        last_user = Transaction.objects.first()
         if last_user:
             last_account_number = last_user.transaction_id
         else:
             last_account_number = 0
 
-        transaction_id = genaret_transaction_id(last_account_number)
+        new_transaction_id = genaret_transaction_id(last_account_number)
 
         if type in ["Transfer", "Payment", "Gift"]:
             receiver = CustomUser.objects.filter(
@@ -89,7 +89,7 @@ def transfer(request):
 
             if request.POST.get("receiver") == sender.account_number:
                 Transaction.objects.create(user=sender,
-                                           transaction_id=transaction_id,
+                                           transaction_id=new_transaction_id,
                                            receiver_name=receiver_full_name,
                                            receiver_account=receiver.account_number,
                                            transaction_amount=amount,
@@ -103,7 +103,7 @@ def transfer(request):
             if not receiver:
                 Transaction.objects.create(user=sender,
                                            receiver_name=receiver_full_name,
-                                           transaction_id=transaction_id,
+                                           transaction_id=new_transaction_id,
                                            receiver_account=request.POST.get(
                                                "receiver_account"),
                                            transaction_amount=amount,
@@ -123,7 +123,7 @@ def transfer(request):
                 receiver.save()
                 Transaction.objects.create(user=sender,
                                            receiver_name=receiver_full_name,
-                                           transaction_id=transaction_id,
+                                           transaction_id=new_transaction_id,
                                            receiver_account=receiver.account_number,
                                            transaction_amount=amount,
                                            transaction_type=type,
@@ -145,7 +145,7 @@ def transfer(request):
                 sender.save()
                 Transaction.objects.create(user=request.user,
                                            transaction_amount=amount,
-                                           transaction_id=transaction_id,
+                                           transaction_id=new_transaction_id,
                                            receiver_name=sender.first_name,
                                            receiver_account=sender.account_number,
                                            transaction_type=type,
@@ -166,7 +166,7 @@ def transfer(request):
                 sender.save()
                 Transaction.objects.create(user=sender,
                                            transaction_amount=amount,
-                                           transaction_id=transaction_id,
+                                           transaction_id=new_transaction_id,
                                            receiver_account=sender.account_number,
                                            transaction_type=type,
                                            transaction_status="Success",
@@ -181,3 +181,16 @@ def transfer(request):
         "users": users
     }
     return render(request, "transactions/transfer.html", context)
+
+
+from django.core.serializers import serialize
+from django.http import JsonResponse
+
+
+def transaction_grap_view(request):
+    transactions_queryset = Transaction.objects.all()
+    transactions_json = serialize('json', transactions_queryset)
+    context = {
+        'transactions_json': transactions_json
+    }
+    return render(request, 'transactions/map.html', context)
