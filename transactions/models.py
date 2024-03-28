@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import CustomUser
-
+from auditlog.registry import auditlog
 
 class BankAccount(models.Model):
     name = models.CharField(max_length=100, null=True,
@@ -47,3 +47,6 @@ class Transaction(models.Model):
     class Meta:
  
          ordering = ["-id"]
+
+auditlog.register(BankAccount)
+auditlog.register(Transaction)

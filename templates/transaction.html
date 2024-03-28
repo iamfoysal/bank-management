@@ -1,4 +1,6 @@
 {% extends 'dashboard.html' %}
+{% load tz %}
+
 {% block content %}
 <div class="content">
   <div class="container-fluid">
@@ -35,7 +37,7 @@
                   <td>{{ transaction.transaction_amount }}</td>
                   <td>{{ transaction.transaction_type }}</td>
                   <td>{{ transaction.transaction_status }}</td>
-                  <td>{{ transaction.transaction_date }}</td>
+                  <td>{{ transaction.transaction_date|timezone:"Asia/Dhaka" }}</td>
                 </tr>
                 {% endfor %}
               </tbody>

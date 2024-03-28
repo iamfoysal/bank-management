@@ -1,5 +1,6 @@
 {% extends 'dashboard.html' %}
 {% block content %}
+{% load tz %}
 
 <style>
     .content {
@@ -70,8 +71,15 @@
                         <h5>Email: {{user.email}}</h5>
                         <h5>Account Number: {{user.account_number}}</h5>
                         <h5>Balance: {{user.balance}}</h5>
-                        <h5>Created: {{user.date_joined}}</h5>
-                        <h5>Updated: {{user.date_updated}}</h5>
+                        <h5>Created: {{user.date_joined|timezone:"Asia/Dhaka"}}</h5>
+                        {% if user.is_active %}
+                        <h5>Status: Active</h5>
+                        {% else %}
+                        <h5>Status: Inactive</h5>
+                        {% endif %}
+                        {% if user.date_updated %}
+                        <h5>Updated: {{user.date_updated|timezone:"Asia/Dhaka"}}</h5>
+                        {% endif %}
                         <h5>Actions: <a href="{% url 'edit_user' user.id %}" class="btn btn-warning btn-sm">Edit</a></h5>
                     </div>
                 </div>

@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django_filters',
     'users',
     'transactions',
+    'auditlog',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,6 +89,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+AUDITLOG_INCLUDE_ALL_MODELS=True
 
 
 # Password validation
@@ -126,7 +129,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False # Set to True if you want to enable timezone support
 
 
 # Static files (CSS, JavaScript, Images)
