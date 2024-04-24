@@ -31,22 +31,17 @@
     ```
     SECRET_KEY=your_secret_key
     DEBUG=True
+    ALLOWED_HOSTS=[]
+
     ```
     Replace `your_secret_key` with a secret key.
     you cna follow the example file `.env-example` to create the `.env` file.
 
-6. Run the following command to create the database:
+6. Run the following command to initialize the database and create the superuser:
 
     ```
-    python manage.py migrate
+    python manage.py init
     ```
-
-7. Run the following command to create a superuser:
-
-    ```
-    python manage.py createsuperuser
-    ```
-
 8. Run the following command to start the server:
 
     ```
@@ -68,7 +63,7 @@
 2. Click on the `Dashboard` button.
 3. Enter the username and password and click on the `Login` button. for example:
     ```
-    username: admin
+    username: admin@gmail.com
     password: admin
     ```
 4. After logging in, you will be redirected to the dashboard.

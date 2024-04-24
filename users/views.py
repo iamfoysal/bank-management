@@ -1,12 +1,14 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.core.paginator import Paginator
-from django.views import View
 from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.views import View
+
+from transactions.models import BankAccount, Transaction
+
 from .models import CustomUser
-from transactions.models import Transaction, BankAccount
 
 
 def users_list(request):
@@ -115,10 +117,11 @@ def user_login(request):
             login(request, user)
             return redirect("dashboard")
         elif user and not user.is_superuser:
-            messages.error(request, "You are not authorized to view this page")
+            login(request, user)
+            return redirect("customer_dashboard")
+        else:
+            messages.error(request, "Invalid credentials")
             return redirect("user_login")
-        messages.error(request, "Invalid credentials")
-        return redirect("user_login")
     return render(request, "auth/login.html")
 
 
@@ -126,3 +129,64 @@ def user_logout(request):
     logout(request)
     messages.success(request, "You have been logged out")
     return redirect("user_login")
+
+
+
+def create_customer(request):
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        last_user = CustomUser.objects.last()
+        if last_user:
+            last_account_number = last_user.account_number
+        else:
+            last_account_number = 0
+
+        account_number = genaret_acount_number(last_account_number)
+        get_user = CustomUser.objects.filter(email=email).first()
+
+        if get_user:
+            messages.error(request, "This email already used by another user")
+            return redirect("create_customer")
+        else:
+            customer = CustomUser.objects.create_user(email=email, first_name=first_name, last_name=last_name, account_number=account_number, password=password)
+            bank = BankAccount.objects.filter(name="Northern").first()
+            customer.bank = bank
+            customer.balance = 0
+            customer.save()
+
+            user = authenticate(request, email=email, password=password)
+            if user:
+                login(request, user)
+                messages.success(request, "User created successfully")
+                return redirect("customer_dashboard")
+            else:
+                messages.error(request, "Invalid credentials")
+                return redirect("user_login")
+      
+
+    return render(request, "index.html")
+
+
+
+
+
+def update_customer(request):
+    if request.method == "POST":
+        user = CustomUser.objects.get(id=request.user.id)
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
+        user.email = request.POST.get("email")
+        user.save()
+        messages.success(request, "Profile updated successfully")
+        return redirect("update_customer")
+    return render(request, "customer/edit_customer.html")
+
+
+
+
+def view_customer(request):
+    user = CustomUser.objects.get(id=request.user.id)
+    return render(request, "view_customer.html", {"user": user})

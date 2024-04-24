@@ -12,7 +12,8 @@
     <section class="wrapper">
       <div class="content">
         <header>
-          <h1>Bank Manager Login</h1>
+          <h1>NORTHERN BANK</h1>
+          <p>Login to your account</p>
         </header>
         <section>
           <form method="POST" class="login-form">
@@ -30,7 +31,11 @@
               <input type="password" placeholder="Password" name="password" />
             </div>
             <div class="input-group"><button type="submit">Login</button></div>
-          </form>
+            
+            <p class="">Note: If you are a customer, you will be redirected to the  <a href="{% url 'customer_dashboard' %}">Customer Portal</a> after logging in. If you are an administrator, you will be redirected to the <a href="{% url 'dashboard' %}">Dashboard</a>. 
+            <p class="message">Don't have an account? <a href="{% url 'create_customer' %}">Open account here</a></p>
+          </p>
+        </form>
         </section>
         
       </div>

@@ -1,0 +1,63 @@
+{% extends 'customer/customer_dashboard.html' %} {% block content %}
+
+<div class="container">
+  <div class="row justify-content-center" style="height: 90%">
+    <div class="col-md-6 col-md-offset-3">
+      <h2 class="text-center mb-4">My Profile</h2>
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            class="form-control"
+            value="{{ user.first_name }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            class="form-control"
+            value="{{ user.last_name }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            value="{{ user.email }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="account_number">Account Number:</label>
+          <input disabled
+            type="text"
+            id="account_number"
+            class="form-control"
+            value="{{ user.account_number }}"
+          />
+        </div>
+        <div class="form-group">
+          <label for="balance">Balance:</label>
+          <input disabled
+            type="text"
+            id="balance"
+            class="form-control"
+            value="{{ user.balance }}"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

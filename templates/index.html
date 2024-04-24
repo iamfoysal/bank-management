@@ -16,7 +16,7 @@
     <!-- fevicon -->
     <link rel="icon" href="{% static 'img/favicon.ico' %}" />
 
-    <title>NUB Bank</title>
+    <title>NORTHERN BANK</title>
   </head>
   <body>
     <header class="header">
@@ -42,14 +42,35 @@
               >Open account</a
             >
           </li> -->
-            <li class="nav__item">
-                <a class="nav__link nav__link--btn dashboard-link" href="{% url 'dashboard' %}"
-                >Dashboard</a
-                >
-            </li>
-              
-        
-            
+          {% if user.is_authenticated %} {% if user.is_superuser %}
+          <li class="nav__item">
+            <a
+              class="nav__link nav__link--btn dashboard-link"
+              href="{% url 'dashboard' %}"
+              >Dashboard</a
+            >
+          </li>
+          {% else %}
+          <li class="nav__item">
+            <a
+              class="nav__link nav__link--btn dashboard-link"
+              href="{% url 'customer_dashboard' %}"
+              >Dashboard</a
+            >
+          </li>
+          {% endif %} {% else %}
+          <li class="nav__item">
+            <a class="nav__link nav__link--btn dashboard-link" href="{% url 'user_login' %}" _blank
+              >Login</a
+            >
+          </li>
+
+          <li class="nav__item">
+            <a class="nav__link nav__link--btn btn--show-modal" href="#"
+              >Open account</a
+            >
+          </li>
+          {% endif %}
         </ul>
       </nav>
 
@@ -326,7 +347,9 @@
       </div>
       <!-- <button class="btn btn--show-modal">Open your free account today!</button>
      -->
-     <a  class="btn" href="{% url  'dashboard'%}" style=" text-decoration: none;">Open free account today!</a>
+      <a class="btn" href="{% url  'dashboard'%}" style="text-decoration: none"
+        >Open free account today!</a
+      >
       <!-- <button class="btn btn--show-modal">Open your free account today!</button> -->
     </section>
 
@@ -334,16 +357,27 @@
       <button class="btn--close-modal">&times;</button>
       <h2 class="modal__header">
         Open your bank account <br />
-        in just <span class="highlight">5 minutes</span>
+        in just <span class="highlight">2 minutes</span>
       </h2>
-      <form class="modal__form">
-        <label>First Name</label>
-        <input type="text" />
-        <label>Last Name</label>
-        <input type="text" />
-        <label>Email Address</label>
-        <input type="email" />
-        <button class="btn">Next step &rarr;</button>
+      <form
+        class="modal__form"
+        method="POST"
+        action="{% url 'create_customer' %}"
+      >
+        {% csrf_token %}
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" required />
+
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required />
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit" class="btn">Register</button>
       </form>
     </div>
     <div class="overlay hidden"></div>

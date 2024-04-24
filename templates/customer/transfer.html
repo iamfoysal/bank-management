@@ -1,4 +1,4 @@
-{% extends 'dashboard.html' %} 
+{% extends 'customer/customer_dashboard.html' %}
 {% block content %}
 {% load static %}
 
@@ -30,27 +30,14 @@
             
         </div>
         <div class="col-md-12 col-lg-6">
-            <h2 class="text-center mb-4">Money Transfers</h2>
+            <h2 class="text-center mb-4">Make Transaction</h2>
             <form action="" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="sender">Accounts</label>
-                    <select id="sender" name="sender" class="form-control" required>
-                        <!-- disable select section -->
-                        <option value="" disabled selected>Select sender</option>
-                        {% for user in users %}
-                            <option value="{{ user.id }}" data-account-number="{{ user.account_number }}">{{ user.first_name }} {{ user.last_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div id="account-number-display"></div>
-                <br>
+            
                 <div class="form-group">
                     <label for="transaction_type">Transaction Type:</label>
                     <select id="transaction_type" name="transaction_type" class="form-control" required>
                         <option value="" disabled selected>Select type</option>
-                        <option value="Deposit">Deposit</option>
-                        <option value="Withdrawal">Withdraw</option>
                         <option value="Transfer">Transfer</option>
                         <option value="Gift">Gift</option>
                         <option value="Payment">Payment</option>
@@ -61,6 +48,7 @@
                     <label for="receiver_account">Receiver's Account:</label>
                     <input type="text" id="receiver_account" name="receiver_account" class="form-control" >
                 </div>
+                <div id="account-number-display"></div>
                 
                 <div class="form-group" id="receiver-name-group">
                     <label for="receiver_name">Receiver's Name:</label>

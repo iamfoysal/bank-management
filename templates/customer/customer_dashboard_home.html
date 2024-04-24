@@ -1,0 +1,164 @@
+{% extends 'customer/customer_dashboard.html' %} {% block content %}
+<!-- design 4 card tos total transaction and total users  -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc -money-coins text-success"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Total Transactions</p>
+                  <p class="card-title">{{total_transactions}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+
+            <div class="stats">
+              <a href="{% url 'customer_dashboard'%}"
+                ><i class="fa fa-calendar-o"></i>Last day</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc -single-02 text-warning"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Balance</p>
+                  <p class="card-title">{{balance}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+            <div class="stats">
+              <a href="{% url 'customer_dashboard'%}">
+                <i class="fa fa-refresh"></i> Update Now</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc -single-02 text-warning"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Transaction Amount</p>
+                  <p class="card-title">{{total_amount}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+            <div class="stats">
+              <a href="{% url 'customer_dashboard'%}">
+                <i class="fa fa-refresh"></i> Update Now</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc -money-coins text-success"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Bank Name</p>
+                  <p class="card-title">{{bank_name}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <hr />
+            <div class="stats">
+              <a href="{% url 'customer_dashboard'%}">
+                <i class="fa fa-refresh"></i> Update Now</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- last 10 transactions -->
+      <div class="col-md-12">
+        <div class="card strpied-tabled-with-hover">
+          <div class="card-header">
+            <h4 class="card-title">Transactions</h4>
+            <p class="card-category">Last 10 Transaction</p>
+          </div>
+          <div class="card-body table-full-width table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <th>ID</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Receiver's Account</th>
+                <th>Amount</th>
+                <th>Purpose</th>
+                <th>Status</th>
+                <th>Date</th>
+              </thead>
+              <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                  <td>{{ transaction.transaction_id }}</td>
+                  {% if transaction.user.first_name %}
+                  <td>{{ transaction.user.first_name }} {{ transaction.user.last_name }}   </td>
+                  {% else %}
+                  <td>{{ transaction.user.email }}</td>
+                  {% endif %}
+                  <td>{{ transaction.receiver_name }}</td>
+                  <td>{{ transaction.receiver_account }}</td>
+                  <td>{{ transaction.transaction_amount }}</td>
+                  <td>{{ transaction.transaction_type }}</td>
+                  <td>{{ transaction.transaction_status }}</td>
+                  <td>{{ transaction.transaction_date }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

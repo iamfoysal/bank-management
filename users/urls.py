@@ -8,6 +8,8 @@ from .views import (users_list,
                     user_search,
                     user_login,
                     user_logout,
+                    create_customer,
+                    update_customer,
                     )
 
 urlpatterns = [
@@ -19,5 +21,9 @@ urlpatterns = [
     path('dashboard/users/<int:user_id>/view/', login_required(view_user), name='view_user'),
     path('dashboard/users/<int:user_id>/delete/', login_required(delete_user), name='delete_user'),
     path('dashboard/search/', login_required(user_search), name='user_search'),
+    # customers
+    path('customers/create/', create_customer, name='create_customer'),
+    path('customers/update/',login_required(update_customer), name='update_customer'),
+
 
 ]
